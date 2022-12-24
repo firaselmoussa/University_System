@@ -6,7 +6,7 @@ package university_system;
 
 /**
  *
- * @author yasmin
+ * @author Firas
  */
 public class University_System {
 
