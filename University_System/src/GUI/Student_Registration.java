@@ -7,6 +7,15 @@ package GUI;
 //import com.sun.jdi.connect.spi.Connection;
 
 
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Firas
@@ -18,6 +27,7 @@ public class Student_Registration extends javax.swing.JFrame {
      */
     public Student_Registration() {
         initComponents();
+        refresh_table();
     }
 
     /**
@@ -286,6 +296,58 @@ public class Student_Registration extends javax.swing.JFrame {
 
     
     
+    
+    Connection con1;
+    PreparedStatement insert;
+    
+    
+    
+    private void refresh_table(){
+        
+        int c;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost/universitydb", "root", "");
+            
+            insert = con1.prepareStatement("SELECT * FROM student");
+            
+            ResultSet rs = insert.executeQuery();
+            ResultSetMetaData Rss = rs.getMetaData();
+            c = Rss.getColumnCount();
+            
+            DefaultTableModel Df = (DefaultTableModel)registered_students_table.getModel();
+            Df.setRowCount(0);
+            
+            while(rs.next()){
+                Vector v2 = new Vector();
+                
+                for(int i = 1; i <= c; i++){
+                    v2.add(rs.getString("id"));
+                    v2.add(rs.getString("major"));
+                    v2.add(rs.getString("first_name"));
+                    v2.add(rs.getString("last_name"));
+                    v2.add(rs.getString("address"));
+                    v2.add(rs.getString("phone_number"));
+                    v2.add(rs.getDate("birth_date"));
+                }
+                
+                Df.addRow(v2);
+                
+            }
+          
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Student_Registration.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Student_Registration.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        
+    }
+    
+    
+        
     //INSERT INTO DB
     private void submit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submit_btnActionPerformed
         // TODO add your handling code here:
