@@ -411,7 +411,59 @@ public class Student_Registration extends javax.swing.JFrame {
     private void update_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_btnActionPerformed
         // TODO add your handling code here:
         
-       
+        DefaultTableModel Df = (DefaultTableModel)registered_students_table.getModel();
+        int selectedIndex = registered_students_table.getSelectedRow();
+        
+        try {
+            
+            String id = Df.getValueAt(selectedIndex, 0).toString();
+            
+            String major = major_txt.getText();
+            String first_name = first_name_txt.getText();
+            String last_name = last_name_txt.getText();
+            String address = address_txt.getText();
+            String phone_number = phone_number_txt.getText();
+            String birth_date = birth_date_txt.getText();
+            
+            
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost/universitydb", "root", "");
+            insert = con1.prepareStatement("UPDATE student SET major = ?, first_name = ?, last_name = ?, address = ?, phone_number = ?, birth_date = ? WHERE id = ?");
+            insert.setString(1, major);
+            insert.setString(2, first_name);
+            insert.setString(3, last_name);
+            insert.setString(4, address);
+            insert.setString(5, phone_number);
+            
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
+            java.util.Date bday = formatter.parse(birth_date);
+            insert.setDate(6, new java.sql.Date(bday.getTime()));
+            
+            insert.setString(7, id);
+            
+            insert.executeUpdate();
+            
+            JOptionPane.showMessageDialog(this, "Data Updated!");
+            
+            major_txt.setText("");
+            first_name_txt.setText("");
+            last_name_txt.setText("");
+            major_txt.setText("");
+            address_txt.setText("");
+            phone_number_txt.setText("");
+            birth_date_txt.setText("");
+            
+            major_txt.requestFocus();
+            
+            refresh_table();
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Student_Registration.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Student_Registration.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(Student_Registration.class.getName()).log(Level.SEVERE, null, ex);
+        } 
         
         
     }//GEN-LAST:event_update_btnActionPerformed
