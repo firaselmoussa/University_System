@@ -419,7 +419,40 @@ public class Student_Registration extends javax.swing.JFrame {
     private void delete_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_btnActionPerformed
         // TODO add your handling code here:
         
+        DefaultTableModel Df = (DefaultTableModel)registered_students_table.getModel();
+        int selectedIndex = registered_students_table.getSelectedRow();
         
+        
+        try {
+            
+            String id = Df.getValueAt(selectedIndex, 0).toString();
+           
+            
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con1 = DriverManager.getConnection("jdbc:mysql://localhost/universitydb", "root", "");
+            insert = con1.prepareStatement("DELETE FROM student WHERE id = ?");
+            insert.setString(1,id);
+            insert.executeUpdate();
+            
+            JOptionPane.showMessageDialog(this, "Data Deleted");
+            
+            major_txt.setText("");
+            first_name_txt.setText("");
+            last_name_txt.setText("");
+            major_txt.setText("");
+            address_txt.setText("");
+            phone_number_txt.setText("");
+            birth_date_txt.setText("");
+            
+            major_txt.requestFocus();
+            
+            refresh_table();
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Student_Registration.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Student_Registration.class.getName()).log(Level.SEVERE, null, ex);
+        } 
         
     }//GEN-LAST:event_delete_btnActionPerformed
 
