@@ -403,7 +403,15 @@ public class Student_Registration extends javax.swing.JFrame {
 
     private void registered_students_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registered_students_tableMouseClicked
         // TODO add your handling code here:
+        DefaultTableModel Df = (DefaultTableModel)registered_students_table.getModel();
+        int selectedIndex = registered_students_table.getSelectedRow();
         
+        major_txt.setText((String) Df.getValueAt(selectedIndex, 1));
+        first_name_txt.setText((String) Df.getValueAt(selectedIndex, 2));
+        last_name_txt.setText((String) Df.getValueAt(selectedIndex, 3));
+        address_txt.setText((String) Df.getValueAt(selectedIndex, 4));
+        phone_number_txt.setText((String) Df.getValueAt(selectedIndex, 5));
+        birth_date_txt.setText(Df.getValueAt(selectedIndex, 6).toString());
         
     }//GEN-LAST:event_registered_students_tableMouseClicked
 
